@@ -1,53 +1,73 @@
-﻿var pattern = File.ReadAllText("pattern").Replace("$ ls", "").Split(
-    new string[] { Environment.NewLine },
-    StringSplitOptions.RemoveEmptyEntries);;
+﻿var pattern = System.IO.File.ReadAllLines("pattern");
 
+var root = new Dir("/", null, new Dictionary<string, SubDir>());
+parseLines(root, pattern);
 
+var sizes = new Dictionary<Dir, long>();
+calcSizes(root, sizes);
 
-foreach (var line in pattern) 
+Console.WriteLine(sizes.Values.Where(size => size <= 100_000).Sum());
+Console.WriteLine(sizes.Values
+    .Where(size => size >= sizes[root] - 40_000_000)
+    .Min());
+
+void parseLines(Dir root, string[] input)
 {
-
-}
-Console.WriteLine("Hello, World!");
-
-
-var root = new Folder("/", 0, new (), new());
-
-void ActionLine(string line, Folder folder)
-{
-    if (line.StartsWith("$ cd") && !line.Contains(".."))
+    var cd = root;
+    foreach (var line in input)
     {
-        folder.Folders.Add(new Folder(line.Replace("$ cd ", ""), 0, new (), new()));
+        if (line.StartsWith(@"$ cd /"))
+        {
+            cd = root;
+        }
+        else if (line.StartsWith(@"$ cd .."))
+        {
+            cd = cd.ParentDir;
+        }
+        else if (line.StartsWith(@"$ cd "))
+        {
+            var name = line.Split(" ").Last().Trim();
+            cd = (Dir)cd.SubDirs[name];
+        }
+        else if (line.StartsWith("dir"))
+        {
+            var name = line.Split(" ").Last().Trim();
+            cd.SubDirs[name] = new Dir(name, cd, new Dictionary<string, SubDir>());
+        }
+        else if (Char.IsNumber(line[0]))
+        {
+            var split = line.Split(" ");
+            var size = long.Parse(split.First().Trim());
+            var name = split.Last().Trim();
+            cd.SubDirs[name] = new File(name, size);
+        }
     }
 }
 
-class Entity
- {
-     public string Name { get; set; }
-     public int Size { get; set; }
-     
-     public Entity (string name, int size)
-     {
-         this.Name = name;
-         this.Size = size;
-     }
- }
 
- class Folder : Entity
- {
-     public List<Fil> Files { get; set; }
-     public List<Folder> Folders { get; set; }
+void calcSizes(Dir dir, Dictionary<Dir, long> sizes)
+{
+    long size = 0;
+    foreach (var child in dir.SubDirs)
+    {
+        if (child.Value is File f)
+        {
+            size += f.Size;
+        }
+        else if (child.Value is Dir d)
+        {
+            calcDirectorySizes(d, sizes);
+            size += sizes[d];
+        }
+    }
+    sizes[dir] = size;
+}
 
-     public Folder(string name, int size, List<Fil> files, List<Folder> folders) : base(name, size)
-     {
-         Files = files;
-         Folders = folders;
-     }
- }
-
- class Fil : Entity
- {
-     public Fil(string name, int size) : base(name, size)
-     {
-     }
- }
+record SubDir(string Name);
+record File(string Name, long Size) : SubDir(Name);
+record Dir(
+    string Name, 
+    Dir ParentDir, 
+    Dictionary<string, SubDir> SubDirs) : SubDir(Name);
+    
+    
