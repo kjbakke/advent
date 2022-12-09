@@ -56,7 +56,7 @@ void calcSizes(Dir dir, Dictionary<Dir, long> sizes)
         }
         else if (child.Value is Dir d)
         {
-            calcDirectorySizes(d, sizes);
+            calcSizes(d, sizes);
             size += sizes[d];
         }
     }
