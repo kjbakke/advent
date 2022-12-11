@@ -37,3 +37,11 @@ _UpgradeReport_Files/
 Thumbs.db
 Desktop.ini
 .DS_Store
+.fake
+
+### VisualStudioCode ###
+.vscode/**/* 
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+**/.history
