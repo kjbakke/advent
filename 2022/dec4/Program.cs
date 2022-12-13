@@ -9,7 +9,7 @@ var stacks = new Dictionary<int, List<char>>()
 var counter = 0;
 foreach (var part in pattern)
 {
-    var pair = part.Split(new string[] { "-", "," }, StringSplitOptions.None);
+    var pair = part.Split(new [] { "-", "," }, StringSplitOptions.None);
     int[] id = new int[4] { Int32.Parse(pair[0]), Int32.Parse(pair[1]), Int32.Parse(pair[2]), Int32.Parse(pair[3])};
     
     if (id[0] <= id[2] && id[1] >= id[2])

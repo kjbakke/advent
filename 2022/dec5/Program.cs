@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices.ComTypes;
-
-var stackPattern = 
+﻿var stackPattern = 
     File.ReadAllText("pattern5stacks")
         .Replace("[", "")
         .Replace("]", "")
@@ -49,14 +47,6 @@ var stacks = new List<string>()
     "VWZGSMR"
 };
 
-// var stacks = new List<string>()
-// {     
-//     "",
-//     "NZ",
-//     "DCM",
-//     "P",
-//
-// };
 foreach (var order in moveOrders)
 {
     var ammount = order[0];

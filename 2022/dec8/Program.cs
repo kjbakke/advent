@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices.ComTypes;
-
-var pattern = File.ReadAllText("pattern").Split(
+﻿var pattern = File.ReadAllText("pattern").Split(
     new[] { Environment.NewLine },
     StringSplitOptions.RemoveEmptyEntries);;
 
