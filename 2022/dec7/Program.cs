@@ -1,6 +1,6 @@
 ﻿var pattern = System.IO.File.ReadAllLines("pattern");
 
-var root = new Dir("/", null, new Dictionary<string, SubDir>());
+var root = new Dir("/", null!, new Dictionary<string, SubDir>());
 parseLines(root, pattern);
 
 var sizes = new Dictionary<Dir, long>();

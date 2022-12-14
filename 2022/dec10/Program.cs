@@ -2,7 +2,6 @@
 var x = 1;
 var cycle = 0;
 var signal = 0;
-var row = 0;
 var screen = "";
 
 foreach (var line in pattern)
