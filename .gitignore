@@ -47,4 +47,4 @@ Desktop.ini
 # Ignore all local history of files
 **/.history
 # Rider
-.idea/
+**/.idea/
